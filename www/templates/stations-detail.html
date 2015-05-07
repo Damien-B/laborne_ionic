@@ -1,0 +1,19 @@
+<ion-view view-title="{{main.logo}}">
+	<ion-nav-bar>
+	 	<ion-nav-back-button style="color: black;">
+	 		Carte
+	 	</ion-nav-back-button>
+	</ion-nav-bar>
+	<ion-content class="padding">
+		<div class=" padding_left_20per">
+			<p class="txtorange"> à {{station.distance}} km</p>
+		  	<p class="txtblue">{{station.nom}}</p>
+		  	<p>{{station.adr}}</p>
+		  	<p>{{station.cp}} {{station.ville}}</p>
+		  	<p>Tél : <a ng-href="tel:{{station.tel}}">{{station.tel}}</a></p>
+	  	</div>
+	  	<hr />
+	  	<p>Nombre de places de rechargement : <span class="float_right markernbbornes">{{station.bornes.dispo}}</span></p>
+	  	<p>Parking équipé de bornes E.Leclerc</p>
+	 </ion-content>
+</ion-view>

@@ -1,0 +1,10 @@
+<ion-view view-title="{{main.logo}}">
+  <ion-nav-bar>
+    <ion-nav-back-button style="color: black;">
+      News
+    </ion-nav-back-button>
+  </ion-nav-bar>
+  <ion-content class="padding">
+  	<iframe ng-src="{{trustSrc(news.HTML_LINK)}}"></iframe>
+  </ion-content>
+</ion-view>

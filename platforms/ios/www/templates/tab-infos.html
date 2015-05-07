@@ -1,0 +1,15 @@
+<ion-view view-title="{{main.logo}}">
+  <ion-content class="padding">
+  	<div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Qui-vere falsone, quaerere mittimus-dicitur oculis se privasse; Cupiditates non Epicuri divisione finiebat, sed sua satietate. Verba tu fingas et ea dicas, quae non sentias? Duo Reges: constructio interrete. Dempta enim aeternitate nihilo beatior Iuppiter quam Epicurus; Stoicos roga. Primum in nostrane potestate est, quid meminerimus? Sit hoc ultimum bonorum, quod nunc a me defenditur</div>
+  	<ion-list >
+  		<ion-item ng-repeat="i in infos" href="#/tab/infos/{{i.id}}" class="item-icon-right">
+  			<img ng-show="i.image != 'default' && i.image" ng-src="{{i.image}}" />
+  			<img ng-show="i.image == 'default'" src="img/icon_infos_default.png" width="30px" />
+			<h3>{{i.title}}</h3>
+        	<i class="icon ion-chevron-right icon-accessory"></i>
+  		</ion-item>
+  	</ion-list>
+  	<p>Contactez-nous pour obtenir plus d'informations</p>
+  	<a ng-href="tel: {{call.num}}"><img ng-src="{{call.image}}" /></a>
+  </ion-content>
+</ion-view>

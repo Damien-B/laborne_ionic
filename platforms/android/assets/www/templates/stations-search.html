@@ -1,0 +1,66 @@
+<ion-view view-title="{{main.logo}}">
+  <ion-nav-bar>
+    <ion-nav-back-button style="color: black;">
+      Liste
+    </ion-nav-back-button>
+  </ion-nav-bar>
+  <ion-content>
+      <div class="item item-divider">
+        <p>Recherche autour d'un lieu</p>
+      </div>
+
+      <p class="padding txtblue">Rayon de recherche</p>
+      <div class="range">
+        <input type="range" min="{{range.min}}" max="{{range.max}}" value="{{range.value}}" ng-model="range.value" ng-change="setDistance()">
+        <span>{{range.value}} Km</span>
+      </div>
+      
+      <p class="padding txtblue">Centre de la recherche</p>
+      <div class="row">
+        <div class="col">
+          <button class="button button-stable center" ng-click="searchAroundMe()">
+            utiliser ma position
+          </button>
+        </div>
+        <div class="col">
+          <button class="button button-stable center" ui-sref="tab.stations-search-address">
+            choisir une ville
+          </button>
+        </div>
+      </div>
+    
+
+     <!--  <div class="item item-divider">
+        <p>Recherche autour d'un itinéraire</p>
+      </div>
+
+
+  	<div class="list">
+
+        
+          <button class="button button-clear col col-20" ng-click="setmypos('from')">
+            <i class="icon ion-ios7-navigate-outline"></i>
+          </button>
+        <label class="item item-input col col-80">
+          <input type="text" placeholder="Ville de départ" ng-model="departure" required>
+        </label>
+
+
+
+        <label class="item item-input">
+          <button class="button button-clear" ng-click="setmypos('to')">
+            <i class="icon ion-ios7-navigate-outline"></i>
+          </button>
+          <input type="text" placeholder="Ville d'arrivée" ng-model="destination" required>
+        </label>
+
+
+        <div class="padding">
+          <button class="button button-block button-positive">Chercher</button>
+        </div>
+
+
+      </div> -->
+    </form>
+  </ion-content>
+</ion-view>

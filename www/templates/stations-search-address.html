@@ -1,0 +1,28 @@
+<ion-view view-title="{{main.logo}}">
+  <ion-nav-bar>
+    <ion-nav-back-button style="color: black;">
+      Recherche
+    </ion-nav-back-button>
+  </ion-nav-bar>
+  <ion-content>
+    <ion-list show-delete="shouldShowDelete" class="list">
+      <form>
+      <ion-item class="item item-input-inset">
+        <label class="item-input-wrapper">
+          <input type="text" placeholder="Adresse" ng-model="parent.address" autofocus required>
+        </label>
+
+        <button type="submit" class="button button-small" ng-click="searchAddress()">
+          Chercher
+        </button>
+      </ion-item>
+      <ion-item class="item" ng-repeat="ad in ads track by ad" ng-click="searchRecAddress(ad)">
+        <p>{{ad}}</p>
+        <ion-delete-button class="ion-minus-circled"
+                       ng-click="ads.splice($index, 1);removeAddress(ad);">
+        </ion-delete-button>
+      </ion-item>
+      </form>
+    </ion-list>
+  </ion-content>
+</ion-view>

@@ -1,0 +1,18 @@
+<ion-view view-title="{{main.logo}}">
+  <ion-nav-bar>
+    <ion-nav-back-button style="color: black;">
+      Carte
+    </ion-nav-back-button>
+  </ion-nav-bar>
+  <ion-content>
+  	<ion-list>
+      <ion-item class="item-icon-right" ng-repeat="station in stations" href="#/tab/stations/{{station.code}}">
+        <h3>{{station.nom}}</h3>
+        <p>à {{station.distance}} km</p>
+        <p>{{station.cp}} {{station.ville}}</p>
+        <div class="markernbbornes">{{station.bornes.dispo}}</div>
+        <i class="icon ion-chevron-right icon-accessory"></i>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-view>

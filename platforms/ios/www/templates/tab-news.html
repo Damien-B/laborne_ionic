@@ -1,0 +1,18 @@
+<ion-view view-title="{{main.logo}}">
+  <ion-nav-buttons side="right">
+    <button class="button" ui-sref="tab.news-alertes">
+      Alertes
+    </button>
+  </ion-nav-buttons>
+  <ion-content>
+    <p ng-hide="main.news && news.length > 0" class="padding">Aucune actualité.</p>
+    <ion-list ng-show="main.news && news.length > 0">
+      <ion-item href="#/tab/news/{{n.ID_MESSAGE}}" class="item-icon-right" ng-repeat="n in news">
+        <h3>{{n.TITRE_MESSAGE}}</h3>
+        <p>{{n.DATE_PUBLICATION | date:'dd MMMM yyyy'}}</p>
+        <p ng-show="{{$index==0}}">{{n.RESUME_MESSAGE}}</p>
+        <i class="icon ion-chevron-right icon-accessory"></i>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-view>
