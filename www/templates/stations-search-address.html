@@ -16,7 +16,7 @@
           Chercher
         </button>
       </ion-item>
-      <ion-item class="item" ng-repeat="ad in ads track by ad" ng-click="searchRecAddress(ad)">
+      <ion-item class="item" ng-repeat="ad in address track by ad" ng-click="searchRecAddress(ad)">
         <p>{{ad}}</p>
         <ion-delete-button class="ion-minus-circled"
                        ng-click="ads.splice($index, 1);removeAddress(ad);">

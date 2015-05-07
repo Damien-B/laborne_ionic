@@ -318,6 +318,24 @@ angular.module('starter.services', [])
           return self.markers[i];
         }
       }
+    },
+    searchItineraire: function(from, to){
+      var self = this;
+      var directionsService = new google.maps.DirectionsService();
+      var directionsDisplay = new google.maps.DirectionsRenderer();
+      directionsDisplay.setMap(self.map);
+      console.log(from + " - " + to);
+      var request = {
+        origin: from, 
+        destination: to,
+        travelMode: google.maps.DirectionsTravelMode.DRIVING
+      };
+      directionsService.route(request, function(response, status) {
+        if (status == google.maps.DirectionsStatus.OK) {
+          directionsDisplay.setDirections(response);
+        }
+      });
+      window.location.href = "#/tab/stations";
     }
   }
 })

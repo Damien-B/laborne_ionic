@@ -30,7 +30,7 @@
       </div>
     
 
-     <!--  <div class="item item-divider">
+      <div class="item item-divider">
         <p>Recherche autour d'un itinéraire</p>
       </div>
 
@@ -38,29 +38,29 @@
   	<div class="list">
 
         
-          <button class="button button-clear col col-20" ng-click="setmypos('from')">
+          <!-- <button class="button button-clear col col-20" ng-click="setmypos('from')">
             <i class="icon ion-ios7-navigate-outline"></i>
-          </button>
-        <label class="item item-input col col-80">
-          <input type="text" placeholder="Ville de départ" ng-model="departure" required>
+          </button> -->
+        <label class="item item-input">
+          <input type="text" placeholder="Ville de départ" ng-model="itinerary.departure" required>
         </label>
 
 
 
-        <label class="item item-input">
-          <button class="button button-clear" ng-click="setmypos('to')">
+          <!-- <button class="button button-clear" ng-click="setmypos('to')">
             <i class="icon ion-ios7-navigate-outline"></i>
-          </button>
-          <input type="text" placeholder="Ville d'arrivée" ng-model="destination" required>
+          </button> -->
+        <label class="item item-input">
+          <input type="text" placeholder="Ville d'arrivée" ng-model="itinerary.destination" required>
         </label>
 
 
         <div class="padding">
-          <button class="button button-block button-positive">Chercher</button>
+          <button class="button button-block button-positive" ng-click="searchItineraire()">Chercher</button>
         </div>
 
 
-      </div> -->
+      </div>
     </form>
   </ion-content>
 </ion-view>

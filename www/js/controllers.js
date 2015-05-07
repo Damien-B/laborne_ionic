@@ -120,6 +120,9 @@ angular.module('starter.controllers', [])
 })
 
 .controller('StationsSearchCtrl', function($scope, MapService){
+  $scope.itinerary = {};
+  $scope.itinerary.departure;
+  $scope.itinerary.destination;
   $scope.range = {
     min: 1,
     max: 50,
@@ -135,11 +138,18 @@ angular.module('starter.controllers', [])
   $scope.searchAroundMe = function(){
     var self = this;
     console.log(MapService.myMarker);
-    MapService.myMarker.setMap(null);
+    if(typeof MapService.myMarker != "undefined"){
+      MapService.myMarker.setMap(null);
+    }
     window.location.href = "#/tab/stations";
     setTimeout(function(){
       MapService.centerToMyPosition();
     }, 1000);
+  };
+
+  $scope.searchItineraire = function(){
+    console.log($scope.itinerary.destination);
+    MapService.searchItineraire($scope.itinerary.departure, $scope.itinerary.destination);
   };
 
 
@@ -160,21 +170,28 @@ angular.module('starter.controllers', [])
   $scope.parent = {};
   $scope.parent.address;
   $scope.address = MapService.getAddresses();
+
   if(MapService.getAddresses() != null){
     $scope.addresses = MapService.getAddresses();
   }
+
   $scope.searchAddress = function(){
     var bnbnbn = $scope.parent.address;
     MapService.getAddresses();
     MapService.setAddress(bnbnbn);
     MapService.centerOnAddress(bnbnbn);
   };
+
   $scope.searchRecAddress = function(address){
     MapService.centerOnAddress(address);
   };
+
   $scope.removeAddress = function(address){
     MapService.removeAddress(address);
   };
+
+
+
 })
 
 .controller('FAQCtrl', function($scope, FAQService) {
