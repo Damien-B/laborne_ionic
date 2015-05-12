@@ -1,0 +1,30 @@
+<meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width, target-densitydpi=device-dpi" />
+<ion-view view-title="{{main.logo}}">
+  <ion-nav-bar>
+    <ion-nav-back-button style="color: black;">
+      Recherche
+    </ion-nav-back-button>
+  </ion-nav-bar>
+  <ion-content>
+    <!-- <ion-list show-delete="shouldShowDelete" class="list"> -->
+    <ion-list class="list">
+      <form>
+      <ion-item class="item item-input-inset">
+        <label class="item-input-wrapper">
+          <input type="text" placeholder="Ville / adresse" ng-model="parent.address" required>
+        </label>
+
+        <button type="submit" class="button button-small" ng-click="searchAddress()">
+          Chercher
+        </button>
+      </ion-item>
+      <ion-item class="item" ng-repeat="ad in address track by ad" ng-click="searchRecAddress(ad)">
+        <p>{{ad}}</p>
+        <!-- <ion-delete-button class="ion-minus-circled"
+                       ng-click="ads.splice($index, 1);removeAddress(ad);">
+        </ion-delete-button> -->
+      </ion-item>
+      </form>
+    </ion-list>
+  </ion-content>
+</ion-view>
