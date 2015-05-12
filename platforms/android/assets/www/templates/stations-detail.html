@@ -5,6 +5,7 @@
 	 	</ion-nav-back-button>
 	</ion-nav-bar>
 	<ion-content class="padding">
+	<img src="img/borne@3x.png" alt="bornes" class="borne" />
 		<div class=" padding_left_20per">
 			<p class="txtorange"> à {{station.distance}} km</p>
 		  	<p class="txtblue">{{station.nom}}</p>
@@ -13,7 +14,7 @@
 		  	<p>Tél : <a ng-href="tel:{{station.tel}}">{{station.tel}}</a></p>
 	  	</div>
 	  	<hr />
-	  	<p>Nombre de places de rechargement : <span class="float_right markernbbornes">{{station.bornes.dispo}}</span></p>
-	  	<p>Parking équipé de bornes E.Leclerc</p>
+	  	<p class="txtblue">Nombre de places de rechargement : <span class="borne txtorange">{{station.bornes.dispo}}</span></p>
+	  	<p class="txtblue">Parking équipé de bornes E.Leclerc<img src="img/borne@3x.png" alt="bornes" class="borne" /></p>
 	 </ion-content>
 </ion-view>

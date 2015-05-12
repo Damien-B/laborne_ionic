@@ -8,14 +8,16 @@ angular.module('starter.services', [])
     all: function(){
       var url = 'http://xibox-preprod.siplec.com/message?key=0ea78fddca2904bc4ae70f3ee5da9b01a297878&app=fr.leclerc.siplec.iphone.laborne';
       $http.get(url)
-      .success(function(data, status, headers, config){//problem, idk
+      .success(function(data, status, headers, config){
+        console.log('news id retrieved');
+        console.log(data.MESSAGE[0]);
           return data.MESSAGE;
       })
       .error(function(data, status, headers, config){
         console.log('error while retrieving news');
+        News = [{"ID_MESSAGE":148,"TITRE_MESSAGE":"test la borne 2.60.2","RESUME_MESSAGE":"tst","DATE_PUBLICATION":"2015-02-18T15:16:00+01:00","HTML_LINK":"http:\/\/xibox-preprod.siplec.com\/message\/view\/id\/148","THEMES":[]},{"ID_MESSAGE":149,"TITRE_MESSAGE":"test 2 la borne 2.60.2","RESUME_MESSAGE":"Test","DATE_PUBLICATION":"2015-02-18T15:16:00+01:00","HTML_LINK":"http:\/\/xibox-preprod.siplec.com\/message\/view\/id\/149","THEMES":[]},{"ID_MESSAGE":134,"TITRE_MESSAGE":"Test La Borne","RESUME_MESSAGE":"Test La Borne","DATE_PUBLICATION":"2014-07-08T00:00:00+02:00","HTML_LINK":"http:\/\/xibox-preprod.siplec.com\/message\/view\/id\/134","THEMES":[]},{"ID_MESSAGE":109,"TITRE_MESSAGE":"LA BORNE E.LECLERC","RESUME_MESSAGE":"Le centre E.Leclerc de Gonfreville-l'Orcher vous informe.","DATE_PUBLICATION":"2012-07-27T18:04:00+02:00","HTML_LINK":"http:\/\/xibox-preprod.siplec.com\/message\/view\/id\/109","THEMES":[{"ID":26,"NAME":"Carburants"}]}];
+        return News;
       });
-      News = [{"ID_MESSAGE":152,"TITRE_MESSAGE":"News N\u00b03 du serveur de PP","RESUME_MESSAGE":"C'est la news 3","DATE_PUBLICATION":"2013-02-12T19:02:00+01:00","HTML_LINK":"http:\/\/xibox-preprod.siplec.com\/message\/view\/id\/152","THEMES":[]},{"ID_MESSAGE":151,"TITRE_MESSAGE":"NEWS N\u00b02","RESUME_MESSAGE":"NEWS N\u00b02 du serveur de PP","DATE_PUBLICATION":"2013-02-12T18:59:00+01:00","HTML_LINK":"http:\/\/xibox-preprod.siplec.com\/message\/view\/id\/151","THEMES":[]}];
-      return News;
     },
     get: function(newId){
       for (var i=0; i < News.length; i++) {
@@ -24,12 +26,15 @@ angular.module('starter.services', [])
         }
       }
       return null;
+    },
+    setNews: function(news){
+      News = news;
     }
   };
 })
 
 
-.factory('MapService', function($http, $state){
+.factory('MapService', function($http, $state, $ionicLoading){
   var myLoc;
   var map;
   var me;
@@ -196,7 +201,6 @@ angular.module('starter.services', [])
           //     //console.log(self.markers[i]);
           //   }
           // }
-          console.log(self.markers);
           self.markers = data;
           console.log(self.markers);
           for(var i = 0, len = self.markers.length;i<len;i++){
@@ -244,11 +248,11 @@ angular.module('starter.services', [])
             //   // console.log('az' + self.markers[i].distance);
             // }
 
-          
+          // $ionicLoading.show({ template: 'Request OK', noBackdrop: true, duration: 800 });
 
         })
         .error(function(data, status, headers, config){
-
+          $ionicLoading.show({ template: 'Request failed', noBackdrop: true, duration: 200 });
         });
     },
     setAddress: function(address){
@@ -272,7 +276,7 @@ angular.module('starter.services', [])
         self.addresses = JSON.parse(window.localStorage.getItem('address'));
         return self.addresses;
       }else{
-        return;
+        return null;
       }
     },
     removeAddress: function(address){

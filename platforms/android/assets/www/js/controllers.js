@@ -7,22 +7,22 @@ angular.module('starter.controllers', [])
 })
 
 .controller('NewsCtrl', function($scope, NewsService) {
+  $scope.news = "blblblblblbblb";
   $scope.news = NewsService.all();
 })
 
 .controller('NewsDetailCtrl', function($scope, $stateParams, NewsService, $http, $sce) {
   $scope.news = NewsService.get($stateParams.newId);
-  // $scope.html = $http.get($scope.news.HTML_LINK).then(function(data){
-  //   return data;
-  // });
-  $scope.html = '<body><div class="sfTContainer">  <a href="http://www.symfony-project.org/"><img alt="symfony PHP Framework" class="sfTLogo" src="/sf/sf_default/images/sfTLogo.png" height="39" width="186" /></a>  <div class="sfTMessageContainer sfTAlert">  <img alt="page not found" class="sfTMessageIcon" src="/sf/sf_default/images/icons/cancel48.png" height="48" width="48" />  <div class="sfTMessageWrap">  <h1>Oops! Page Not Found</h1>  <h5>The server returned a 404 response.</h5> <div></div><dl class="sfTMessageInfo"> <dt>Did you type the URL?</dt> <dd>You may have typed the address (URL) incorrectly. Check it to make sure you\'ve got the exact right spelling, capitalization, etc.</dd> <dt>Did you follow a link from somewhere else at this site?</dt><dd>If you reached this page from another part of this site, please email us at <a href="mailto:[email]">[email]</a> so we can correct our mistake.</dd><dt>Did you follow a link from another site?</dt><dd>Links from other sites can sometimes be outdated or misspelled. Email us at <a href="mailto:[email]">[email]</a> where you came from and we can try to contact the other site in order to fix the problem.</dd> <dt>What\'s next</dt><dd><ul class="sfTIconList"><li class="sfTLinkMessage"><a href="javascript:history.go(-1)">Back to previous page</a></li><li class="sfTLinkMessage"><a href="/webservice.php/">Go to Homepage</a></li></ul></dd></dl><div></body>';
-  $http.get('http://xibox-preprod.siplec.com/message/view/id/151').
-  success(function(data){
-    console.log(data);
-  }).
-  error(function(data){
+  console.log($scope.news.HTML_LINK);
+
+  $http.get('http://xibox-preprod.siplec.com/message/view/id/141')//$http.get($scope.news.HTML_LINK)
+  .success(function(data){
+    $scope.html = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">' + he.decode(data);//trying to decode html
+  })
+  .error(function(data){
     console.log(data);
   });
+
 })
 
 .controller('NewsAlertesCtrl', function($scope) {
@@ -32,11 +32,11 @@ angular.module('starter.controllers', [])
 .controller('StationsCtrl', function($scope, $http, MapService) {
 
   $scope.isLoaded = false;
-  // if(MapService.getDistance() != null){
-  //   $scope.distance = MapService.getDistance()*1000;
-  // }else{
-  //   $scope.distance = 25000;
-  // }
+  if(MapService.getDistance() != null){
+    $scope.distance = MapService.getDistance()*1000;
+  }else{
+    $scope.distance = 25000;
+  }
 
   MapService.setMyMap(48.856614, 2.3522219000000177);
   $scope.CTMP = function(){
@@ -63,15 +63,49 @@ angular.module('starter.controllers', [])
     $scope.bounds = MapService.getMapBounds();
     MapService.setMarkersForBounds($scope.bounds);
   });
+
   //à ajouter à la version PC car zoom molette non detecté par dragend & dblclick.
   google.maps.event.addListener(MapService.map, 'zoom_changed', function() {
     $scope.bounds = MapService.getMapBounds();
     MapService.setMarkersForBounds($scope.bounds);
   });
 
+
 })
 .controller('StationsListeCtrl', function($scope, MapService){
   $scope.stations = MapService.markers;
+
+  setTimeout(function(){
+    
+    var origin = new google.maps.LatLng(JSON.parse(window.localStorage.getItem('user.coords.latitude')), JSON.parse(window.localStorage.getItem('user.coords.longitude')));
+    console.log('origine : ' + origin);
+
+    for(var i=0, len=$scope.stations.length;i<len;i++){
+      (function(index){
+      var destination = new google.maps.LatLng(MapService.getStationLatLng(MapService.getStation($scope.stations[i].code)).lat, MapService.getStationLatLng(MapService.getStation($scope.stations[i].code)).lng);
+      var service = new google.maps.DistanceMatrixService();
+      
+      service.getDistanceMatrix(
+      {
+        origins: [origin],
+        destinations: [destination],
+        travelMode: google.maps.TravelMode.DRIVING,
+      },
+      function(response, status){
+        $scope.$apply(function(){
+          if(response.rows[0].elements[0].status == "OK"){
+            $scope.stations[index].distance = response.rows[0].elements[0].distance.value/1000;
+          }else{
+            $scope.stations[index].distance = "???";
+          }
+        });
+      });
+    })(i);
+    }
+
+  }, 500);
+
+
 })
 
 .controller('StationsDetailCtrl', function($scope, $stateParams, MapService){
@@ -82,23 +116,13 @@ angular.module('starter.controllers', [])
   // }
 
 
-  //calcul de la distance (distance vol d'oiseau dispo dans marker.distance)
-  var origin = MapService.myLoc;
-  console.log('origine : ' + origin);
-  var destination = new google.maps.LatLng(MapService.getStationLatLng(MapService.getStation($stateParams.stationId)).lat, MapService.getStationLatLng(MapService.getStation($stateParams.stationId)).lng);
-  var service = new google.maps.DistanceMatrixService();
-  service.getDistanceMatrix(
-    {
-      origins: [origin],
-      destinations: [destination],
-      travelMode: google.maps.TravelMode.DRIVING,
-    }, callback);
-  function callback(response, status){
-    $scope.distance = response.rows[0].elements[0].distance.value/1000;
-  };
+  
 })
 
 .controller('StationsSearchCtrl', function($scope, MapService){
+  $scope.itinerary = {};
+  $scope.itinerary.departure;
+  $scope.itinerary.destination;
   $scope.range = {
     min: 1,
     max: 50,
@@ -113,10 +137,19 @@ angular.module('starter.controllers', [])
 
   $scope.searchAroundMe = function(){
     var self = this;
+    console.log(MapService.myMarker);
+    if(typeof MapService.myMarker != "undefined"){
+      MapService.myMarker.setMap(null);
+    }
     window.location.href = "#/tab/stations";
     setTimeout(function(){
       MapService.centerToMyPosition();
     }, 1000);
+  };
+
+  $scope.searchItineraire = function(){
+    console.log($scope.itinerary.destination);
+    MapService.searchItineraire($scope.itinerary.departure, $scope.itinerary.destination);
   };
 
 
@@ -136,19 +169,27 @@ angular.module('starter.controllers', [])
 .controller('StationsSearchAddressCtrl', function($scope, MapService){
   $scope.parent = {};
   $scope.parent.address;
-  $scope.ads = MapService.getAddresses();
-  if(MapService.getAddresses() != null){
-    $scope.addresses = MapService.getAddresses();
-  }
+  // $scope.address = MapService.getAddresses();
+  
+  
+
   $scope.searchAddress = function(){
     var bnbnbn = $scope.parent.address;
-    MapService.getAddresses();
-    MapService.setAddress(bnbnbn);
+    // MapService.getAddresses();
+    // MapService.setAddress(bnbnbn);
     MapService.centerOnAddress(bnbnbn);
   };
+
   $scope.searchRecAddress = function(address){
     MapService.centerOnAddress(address);
   };
+
+  $scope.removeAddress = function(address){
+    MapService.removeAddress(address);
+  };
+
+
+
 })
 
 .controller('FAQCtrl', function($scope, FAQService) {

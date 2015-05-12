@@ -6,7 +6,7 @@
   </ion-nav-buttons>
   <ion-content>
     <p ng-hide="main.news && news.length > 0" class="padding">Aucune actualité.</p>
-    <ion-list ng-show="main.news && news.length > 0">
+    <ion-list><!--  ng-show="main.news && news.length > 0"> -->
       <ion-item href="#/tab/news/{{n.ID_MESSAGE}}" class="item-icon-right" ng-repeat="n in news">
         <h3>{{n.TITRE_MESSAGE}}</h3>
         <p>{{n.DATE_PUBLICATION | date:'dd MMMM yyyy'}}</p>

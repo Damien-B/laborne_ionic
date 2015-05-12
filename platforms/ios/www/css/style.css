@@ -1,5 +1,12 @@
 ion-view.shadow {box-shadow: inset 0px -54px 5px rgba(0,0,0,0.2)}
-ion-content {background: rgba(236, 240, 241, 0.5);}
+ion-content {background: #fff;}/*{background: rgba(236, 240, 241, 0.5);}*/
+ion-content > div > img.borne {width: 55px;position: absolute;top: 28px;}
+ion-content > div.scroll > div > img.borne {width: 55px;position: absolute;top: 10px;right: 20px;}
+ion-content > div.scroll > div > p:first-of-type {padding-right: 65px;}
+ion-content > div > p:nth-child(4) {position: relative;margin-top: 20px;}
+ion-content > div > p:nth-child(5) {position: relative;margin-top: 20px;}
+ion-content > div > p:nth-child(5) > img.borne {width: 45px;position: absolute;top: -8px;right: 0px;}
+ion-content > div.scroll > p:nth-child(4) > span.borne {display: inline-block;width: 32px;height: 32px;background-image: url('../img/bornedispo_small@2x.png');background-size: 44px;text-align: center;padding-top: 6px;box-sizing: border-box;color: rgb(241, 142, 0);vertical-align: top;top: -5px;right: 9px;font-weight: 500;background-position: -5px 0px;position: absolute;}
 
 .tab1 ion-item a {background-color: none;}
 .tab1 ion-item h3 {font-weight: bold;text-transform: uppercase;}
@@ -18,7 +25,6 @@ ion-content {background: rgba(236, 240, 241, 0.5);}
 /*ion-item {box-shadow: inset 0px 2px 10px rgba(0, 0, 0, 0.1);}*/
 
 
-
 .newsdetailheader {padding: 2% !important;}
 .newsdetailheader h3 {text-align: center;font-weight: bold;}
 
@@ -30,6 +36,7 @@ a[href^="http://maps.google.com/maps"]{display:none !important}
 .gmnoprint div, .gm-style-cc {background:none !important;}
 #map {width: 100%;height: 100%;}
 .scroll {height: 100%;}
+.button-delete {background-color: #F44336;color: #fff;}
 
 .tab4 ion-list {margin: 0px 20px;}
 .tab4 ion-item > a {padding: 12px 10px 6px 10px !important;}
@@ -41,8 +48,8 @@ a[href^="http://maps.google.com/maps"]{display:none !important}
 .tab2 div#centertomyposition:active {background: rgba(230, 230, 230, 0.8);}
 .tab2 div#centertomyposition img {vertical-align: middle;text-align: center;}
 
-.markernbbornes {display: inline-block;width: 32px;height: 32px;background-image: url('../img/bornedispo_small@2x.png');background-size: 32px;text-align: center;padding-top: 3px;box-sizing: border-box;color: rgb(241, 142, 0);vertical-align: top;margin-top: 3px;margin-right: 5px;font-weight: 500;}
-ion-list ion-item div.markernbbornes {float: right;margin-top: -45px;width: 46px;height: 46px;background-image: url('../img/bornedispo_small@2x.png');background-size: 46px;padding-top: 8px;}
+.markernbbornes {display: inline-block;width: 32px;height: 32px;background-image: url('../img/bornedispo_small@2x.png');background-size: 45px;text-align: center;padding-top: 7px;box-sizing: border-box;color: rgb(241, 142, 0);vertical-align: top;margin-top: 0px;margin-right: 5px;font-weight: 500;background-position: -6px 0px;}
+ion-list ion-item div.markernbbornes {float: right;margin-top: -50px;width: 46px;height: 46px;background-image: url('../img/bornedispo_small@2x.png');background-size: 46px;padding-top: 8px;background-position: 1px 0px;}
 div.markertxt {display: inline-block;color: white;}
 div.markertxt > h5.markernom {font-weight: bold;margin: 0px;color: white;}
 div.markertxt > p.markerlieu {margin: 0px;}
@@ -50,6 +57,8 @@ div.markertxt > p.markerlieu {margin: 0px;}
 
 .txtblue, .txtblue * {color: #0A1372;font-weight: 600;}
 .txtorange, .txtorange * {color: #F18E00;}
+.txtblack, .txtblack * {color: #000;font-weight: 600;}
+
 
 .tab3 .item-content p {white-space: normal;}
 
@@ -59,5 +68,14 @@ div.markertxt > p.markerlieu {margin: 0px;}
 #map > div > div:nth-child(1) > div:nth-child(3) > div:nth-child(4) > div > div:nth-child(1) > div:nth-child(3) {top: 60px !important;}
 #map > div > div:nth-child(1) > div:nth-child(3) > div:nth-child(4) > div > div:nth-child(3) {border-radius: 3px;}
 #map > div > div:nth-child(1) > div:nth-child(3) > div:nth-child(4) > div > div:nth-child(1) > div:nth-child(4), #map > div > div:nth-child(1) > div:nth-child(3) > div:nth-child(4) > div > div:nth-child(1) > div:nth-child(2) {border-radius: 14px !important;}
+
+
+
+
+.button {line-height: 1.2em;}
+ion-list > div.list > ion-item > a {padding-right: 35px !important;}
+
+
+
 
 

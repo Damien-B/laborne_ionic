@@ -2,20 +2,22 @@ angular.module('starter.services', [])
 
 
 
-.factory('NewsService', function($http) {
+.factory('NewsService', function($http){
   var News = [];
   return {
-    all: function() {
+    all: function(){
       var url = 'http://xibox-preprod.siplec.com/message?key=0ea78fddca2904bc4ae70f3ee5da9b01a297878&app=fr.leclerc.siplec.iphone.laborne';
-      // $http.get(url).success(function(data){
-      //     console.log(data);
-      //     console.log(data.MESSAGE[1].ID_MESSAGE);
-      //     return data.MESSAGE;
-      // }).error(function(){});
+      $http.get(url)
+      .success(function(data, status, headers, config){//problem, idk
+          return data.MESSAGE;
+      })
+      .error(function(data, status, headers, config){
+        console.log('error while retrieving news');
+      });
       News = [{"ID_MESSAGE":152,"TITRE_MESSAGE":"News N\u00b03 du serveur de PP","RESUME_MESSAGE":"C'est la news 3","DATE_PUBLICATION":"2013-02-12T19:02:00+01:00","HTML_LINK":"http:\/\/xibox-preprod.siplec.com\/message\/view\/id\/152","THEMES":[]},{"ID_MESSAGE":151,"TITRE_MESSAGE":"NEWS N\u00b02","RESUME_MESSAGE":"NEWS N\u00b02 du serveur de PP","DATE_PUBLICATION":"2013-02-12T18:59:00+01:00","HTML_LINK":"http:\/\/xibox-preprod.siplec.com\/message\/view\/id\/151","THEMES":[]}];
       return News;
     },
-    get: function(newId) {
+    get: function(newId){
       for (var i=0; i < News.length; i++) {
         if (News[i].ID_MESSAGE === parseInt(newId)) {
           return News[i];
@@ -23,18 +25,19 @@ angular.module('starter.services', [])
       }
       return null;
     }
-  }
+  };
 })
 
 
-.factory('MapService', function($http){
+.factory('MapService', function($http, $state, $ionicLoading){
   var myLoc;
   var map;
   var me;
   var addresses = [];
   var lookup = [];
   var markers = [];
-      var myMarker;
+  var myMarker;
+  var d;
   return{
     setMyMap: function(lat, lng){
       var Latlng = new google.maps.LatLng(lat, lng);
@@ -112,8 +115,6 @@ angular.module('starter.services', [])
 
     },
     setZoomLevel: function(latlng){
-      console.log(latlng);
-      console.log('passage dans setzoomlevel');
       var self = this;
       var circleOptions = {
           center: latlng,
@@ -122,7 +123,7 @@ angular.module('starter.services', [])
           map: self.map,
           radius: parseInt(JSON.parse(window.localStorage.getItem('map.search.distance')))*1000
       };
-      console.log(circleOptions);
+      
       var myCircle = new google.maps.Circle(circleOptions);
       self.map.fitBounds(myCircle.getBounds());
     },
@@ -134,13 +135,13 @@ angular.module('starter.services', [])
     },
     getMapBounds: function(){
       var bounds = {
-        lt1: this.map.getBounds().Da.j,
-        lt2: this.map.getBounds().Da.k,
-        lg1: this.map.getBounds().va.j,
-        lg2: this.map.getBounds().va.k
+        lt1: this.map.getBounds().getNorthEast().A,
+        lt2: this.map.getBounds().getSouthWest().A,
+        lg1: this.map.getBounds().getSouthWest().F,
+        lg2: this.map.getBounds().getNorthEast().F
       };
       // console.log(this.map.zoom);
-      // console.log(bounds);
+      //console.log(bounds);
       return bounds;
     },
     centerOnAddress: function(address){
@@ -183,7 +184,7 @@ angular.module('starter.services', [])
       
 
       var urlMarkers = 'http://xibox-preprod.siplec.com/station?key=0ea78fddca2904bc4ae70f3ee5da9b01a297878&lt1=' + bounds.lt1 + '&lg1=' + bounds.lg1 + '&lt2=' + bounds.lt2 + '&lg2=' + bounds.lg2 + '&ens=LECLERC&nbmax=50&prod=ELEC';
-      console.log('url map : ' + urlMarkers);
+      //console.log('url map : ' + urlMarkers);
       $http.get(urlMarkers)
         .success(function(data, status, headers, config){
           // if(self.markers){
@@ -195,7 +196,9 @@ angular.module('starter.services', [])
           //     //console.log(self.markers[i]);
           //   }
           // }
+          console.log(self.markers);
           self.markers = data;
+          console.log(self.markers);
           for(var i = 0, len = self.markers.length;i<len;i++){
             var lat = self.getStationLatLng(self.markers[i]).lat;
             var lng = self.getStationLatLng(self.markers[i]).lng;
@@ -209,15 +212,49 @@ angular.module('starter.services', [])
               console.log(self.markers[i].nom + ' déjà enregistré');
             }
           }
+
+            // DISTANCE USER TO STATIONS
+
+
+            // var origin = new google.maps.LatLng(JSON.parse(window.localStorage.getItem('user.coords.latitude')), JSON.parse(window.localStorage.getItem('user.coords.longitude')));
+
+            // for(var i=0, len=self.markers.length;i<len;i++){
+            //   var destination = new google.maps.LatLng(self.getStationLatLng(self.getStation(self.markers[i].code)).lat, self.getStationLatLng(self.getStation(self.markers[i].code)).lng);
+            //   var service = new google.maps.DistanceMatrixService();
+            //   service.getDistanceMatrix(
+            //     {
+            //       origins: [origin],
+            //       destinations: [destination],
+            //       travelMode: google.maps.TravelMode.DRIVING,
+            //     },
+            //     function callback(response, status){
+            //       //self.markers[i].distance = response.rows[0].elements[0].distance.value/1000;
+            //       console.log('i ' + i);
+            //       console.log('self.markers[i].distance ' + self.markers[i].distance);
+            //       console.log('d ' + response.rows[0].elements[0].distance.value/1000);
+            //     });
+            //   // function callback(response, status){
+            //   //   console.log(response.rows[0].elements[0].distance.value/1000);
+            //   //   self.d = response.rows[0].elements[0].distance.value/1000;
+            //   //   //console.log(self.markers[i].nom + ' --- ' + self.markers[i].distance);
+            //   // };
+            //   // // console.log(self.markers.distance);
+            //   // console.log('ok' + self.d);
+            //   // self.markers[i].distance = self.d;
+            //   // console.log('az' + self.markers[i].distance);
+            // }
+
+          // $ionicLoading.show({ template: 'Request OK', noBackdrop: true, duration: 800 });
+
         })
         .error(function(data, status, headers, config){
-
+          $ionicLoading.show({ template: 'Request failed', noBackdrop: true, duration: 200 });
         });
     },
     setAddress: function(address){
       var self = this;
-      if(addresses != null){
-        addresses.push(address);
+      if(self.addresses != null){
+        self.addresses.push(address);
       }
       console.log(address);
       if(window.localStorage.getItem('address') != null){
@@ -227,15 +264,30 @@ angular.module('starter.services', [])
           }
         }
       }
-      window.localStorage.setItem('address', JSON.stringify(addresses));
+      window.localStorage.setItem('address', JSON.stringify(self.addresses));
     },
     getAddresses: function(){
       var self = this;
       if(window.localStorage.getItem('address') != null){
-        addresses = JSON.parse(window.localStorage.getItem('address'));
-        return addresses;
+        self.addresses = JSON.parse(window.localStorage.getItem('address'));
+        return self.addresses;
       }else{
-        return;
+        return null;
+      }
+    },
+    removeAddress: function(address){
+      var self = this;
+      self.getAddresses();
+      if(self.addresses != null){
+        for(var i=0, len=self.addresses.length;i<len;i++){
+
+          if(self.addresses[i] == address){
+            var index = self.addresses.indexOf(self.addresses[i]);
+            self.addresses.splice(index, 1);
+            window.localStorage.setItem('address', JSON.stringify(self.addresses));
+            $state.go($state.current, {}, {reload: true});
+          }
+        }
       }
     },
     getStationLatLng: function(station){
@@ -266,6 +318,24 @@ angular.module('starter.services', [])
           return self.markers[i];
         }
       }
+    },
+    searchItineraire: function(from, to){
+      var self = this;
+      var directionsService = new google.maps.DirectionsService();
+      var directionsDisplay = new google.maps.DirectionsRenderer();
+      directionsDisplay.setMap(self.map);
+      console.log(from + " - " + to);
+      var request = {
+        origin: from, 
+        destination: to,
+        travelMode: google.maps.DirectionsTravelMode.DRIVING
+      };
+      directionsService.route(request, function(response, status) {
+        if (status == google.maps.DirectionsStatus.OK) {
+          directionsDisplay.setDirections(response);
+        }
+      });
+      window.location.href = "#/tab/stations";
     }
   }
 })

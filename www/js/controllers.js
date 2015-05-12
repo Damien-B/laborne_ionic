@@ -6,20 +6,29 @@ angular.module('starter.controllers', [])
   this.logo = "<img src='img/logo.png' style='margin-top: 6px;'>";
 })
 
-.controller('NewsCtrl', function($scope, NewsService) {
-  $scope.news = "blblblblblbblb";
-  $scope.news = NewsService.all();
+.controller('NewsCtrl', function($scope, NewsService, $http) {
+  var url = 'http://xibox-preprod.siplec.com/message?key=0ea78fddca2904bc4ae70f3ee5da9b01a297878&app=fr.leclerc.siplec.iphone.laborne';
+  $http.get(url)
+  .success(function(data, status, headers, config){
+    $scope.news = data.MESSAGE;
+    NewsService.setNews(data.MESSAGE);
+  })
+  .error(function(data, status, headers, config){
+    console.log('error');
+    $scope.news = [{"ID_MESSAGE":148,"TITRE_MESSAGE":"test la borne 2.60.2","RESUME_MESSAGE":"tst","DATE_PUBLICATION":"2015-02-18T15:16:00+01:00","HTML_LINK":"http:\/\/xibox-preprod.siplec.com\/message\/view\/id\/148","THEMES":[]},{"ID_MESSAGE":149,"TITRE_MESSAGE":"test 2 la borne 2.60.2","RESUME_MESSAGE":"Test","DATE_PUBLICATION":"2015-02-18T15:16:00+01:00","HTML_LINK":"http:\/\/xibox-preprod.siplec.com\/message\/view\/id\/149","THEMES":[]},{"ID_MESSAGE":134,"TITRE_MESSAGE":"Test La Borne","RESUME_MESSAGE":"Test La Borne","DATE_PUBLICATION":"2014-07-08T00:00:00+02:00","HTML_LINK":"http:\/\/xibox-preprod.siplec.com\/message\/view\/id\/134","THEMES":[]},{"ID_MESSAGE":109,"TITRE_MESSAGE":"LA BORNE E.LECLERC","RESUME_MESSAGE":"Le centre E.Leclerc de Gonfreville-l'Orcher vous informe.","DATE_PUBLICATION":"2012-07-27T18:04:00+02:00","HTML_LINK":"http:\/\/xibox-preprod.siplec.com\/message\/view\/id\/109","THEMES":[{"ID":26,"NAME":"Carburants"}]}];
+  });
 })
 
 .controller('NewsDetailCtrl', function($scope, $stateParams, NewsService, $http, $sce) {
   $scope.news = NewsService.get($stateParams.newId);
-  console.log($scope.news.HTML_LINK);
+  // console.log($scope.news.HTML_LINK);
 
-  $http.get('http://xibox-preprod.siplec.com/message/view/id/141')//$http.get($scope.news.HTML_LINK)
+  $http.get($scope.news.HTML_LINK)//('http://xibox-preprod.siplec.com/message/view/id/141')//
   .success(function(data){
     $scope.html = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">' + he.decode(data);//trying to decode html
   })
   .error(function(data){
+    console.log('error');
     console.log(data);
   });
 
@@ -169,16 +178,14 @@ angular.module('starter.controllers', [])
 .controller('StationsSearchAddressCtrl', function($scope, MapService){
   $scope.parent = {};
   $scope.parent.address;
-  $scope.address = MapService.getAddresses();
-
-  if(MapService.getAddresses() != null){
-    $scope.addresses = MapService.getAddresses();
-  }
+  // $scope.address = MapService.getAddresses();
+  
+  
 
   $scope.searchAddress = function(){
     var bnbnbn = $scope.parent.address;
-    MapService.getAddresses();
-    MapService.setAddress(bnbnbn);
+    // MapService.getAddresses();
+    // MapService.setAddress(bnbnbn);
     MapService.centerOnAddress(bnbnbn);
   };
 
